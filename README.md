@@ -41,6 +41,11 @@ contentful space import --config import/config.json
 - `NEXT_PUBLIC_ACCESS_TOKEN=`
 
 
+## getStatucProps
+> Nos funciona cuando requerimos que nuestra aplicacion sea SEO friendly. Dado que los SPA o client-side rendering no generan contenido, esta tecnica nos ayuda a que nuestro sitio en Next.js sea encontrado por Google. Solo punciona en páginas
+
+
+
 
 ### Enlaces y lecturas recomendadas
 - [Modern Web Development on the Jamstack - Netlify](https://www.netlify.com/oreilly-jamstack/)
