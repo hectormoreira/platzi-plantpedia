@@ -75,7 +75,7 @@ function PlantpediaNoLoVeniasVenirLogo({ title }: { title: string }) {
       </Head>
       <Typography variant="h4" className="flex-grow" component="h1">
         <a
-          href="/"
+          href="/"          
           onMouseEnter={toggleCraziness}
           onMouseLeave={toggleCraziness}
         >

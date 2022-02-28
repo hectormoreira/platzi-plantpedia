@@ -1,48 +1,82 @@
-import { getPlant, QueryStatus } from '@api'
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router'
+import { getPlant, getPlantList, getCategoryList } from '@api'
+import React from 'react';
 import { Layout } from '@components/Layout';
 import { Grid } from '@ui/Grid';
 import { Typography } from '@ui/Typography';
 import { RichText } from '@components/RichText';
 import { AuthorCard } from '@components/AuthorCard';
+import { GetStaticProps, InferGetStaticPropsType } from 'next';
+import { PlantEntryInline } from '@components/PlantCollection';
+import Link from 'next/link'
 
 
-export default function PlantEntryPage() {
-    const [status, setStatus] = useState<QueryStatus>("idle")
+type PathType = {
+    params: {
+        slug: string
+    }
+}
 
-    const [plant, setPlant] = useState<Plant | null>(null)
-    const router = useRouter()
-    const slug = router.query.slug
-    useEffect(() => {
-        if (typeof slug !== "string") {
-            return
+export const getStaticPaths = async () => {
+    const entries = await getPlantList({ limit: 10 })
+    const paths: PathType[] = entries.map((plant) => ({
+        params: {
+            slug: plant.slug
         }
-        setStatus("loading")
-        getPlant(slug).then(receivedData => {
-            setPlant(receivedData)
-            setStatus("success")
-        }).catch(()=>{
-            setStatus("error")
-        })
-    }, [slug])
+    }))
 
-    if (status === "loading" || status === "idle") {
-        return (
-            <Layout>
-                <main>
-                    loading...
-                </main>
-            </Layout>
-        )
+    return {
+        paths,
+        // 404 en las entradas no encontradas
+        fallback: false
+    }
+}
+
+// Paginas vamos a ejecutar
+type PlantEntryProps = {
+    plant: Plant | null
+    otherEntries: Plant[] | null
+    categories: Category[] | null
+}
+
+export const getStaticProps: GetStaticProps<PlantEntryProps> = async ({ params }) => {
+    const slug = params?.slug
+    if (typeof slug !== "string") {
+        return {
+            notFound: true
+        }
     }
 
-    if (plant == null || status === "error") {
+    try {
+        const plant = await getPlant(slug)
+
+        // Sidebar
+        const otherEntries = await getPlantList({
+            limit: 5
+        })
+        const categories = await getCategoryList({
+            limit: 5
+        })
+
+        return {
+            props: {
+                plant,
+                otherEntries,
+                categories
+            }
+        }
+    } catch (e) {
+        return {
+            notFound: true
+        }
+    }
+}
+
+export default function PlantEntryPage({ plant, otherEntries, categories }: InferGetStaticPropsType<typeof getStaticProps>) {
+
+    if (plant == null) {
         return (
             <Layout>
-                <main>
-                    404, my friend
-                </main>
+                <main className="pt-16 text-center">404, My friend</main>
             </Layout>
         )
     }
@@ -67,11 +101,27 @@ export default function PlantEntryPage() {
                         <Typography variant="h5" component="h3" className="mb-4">
                             Recent post
                         </Typography>
+                        {otherEntries?.map((plantEntry) => (
+                            <article className="mb-4" key={plantEntry.id}>
+                                <PlantEntryInline {...plantEntry} />
+                            </article>
+                        ))}
                     </section>
                     <section>
                         <Typography variant="h5" component="h3" className="mb-4">
                             Categories
                         </Typography>
+                        <ul className='list'>
+                            {categories?.map((category) => (
+                                <li key={category.id}>
+                                    <Link passHref href={`/category/${category.slug}`}>
+                                        <Typography component="a" variant='h6'>
+                                            {category.title}
+                                        </Typography>
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
                     </section>
                 </Grid>
             </Grid>

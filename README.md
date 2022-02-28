@@ -41,9 +41,20 @@ contentful space import --config import/config.json
 - `NEXT_PUBLIC_ACCESS_TOKEN=`
 
 
-## getStatucProps
-> Nos funciona cuando requerimos que nuestra aplicacion sea SEO friendly. Dado que los SPA o client-side rendering no generan contenido, esta tecnica nos ayuda a que nuestro sitio en Next.js sea encontrado por Google. Solo punciona en páginas
+## getStaticProps
+> Nos funciona cuando requerimos que nuestra aplicacion sea SEO friendly. Dado que los SPA o client-side rendering no generan contenido, esta tecnica nos ayuda a que nuestro sitio en Next.js sea encontrado por Google. Solo funciona en páginas y se ejecuta en build time una vez
 
+## 🚌 Trade-offs de SSG
+- Al final, solo son archivos estáticos (HTML, CSS y JS): el deployment es el más fácil y puede hacer en cualquier servidor
+  - Sin contar que no necesita muchos recursos,
+  - No necesita mucho trabajo por parte del servidor
+  - Podemos almacenar en un CDN para que sea superveloz
+- El SEO y performance de carga serán de los mejores
+- No todos los sitios se pueden generar de forma estática. Debido a que los datos debes obtenerlos en tiempo real y no estarán incrustados directamente en el HTML Ej.:
+  - Páginas de usuario
+  - Información personalizada
+  - Dashboard
+- El build time mientras más páginas se tenga más lento será el proceso
 
 
 
