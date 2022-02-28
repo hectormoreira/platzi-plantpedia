@@ -12,7 +12,8 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => {
     return {
         props: {
             plants
-        }
+        },
+        revalidate: 5 * 60 // refresh every 5min
     }
 }
 
@@ -20,7 +21,7 @@ export default function Home({ plants }: InferGetStaticPropsType<typeof getStati
     return (
         <Layout>
             <Hero {...plants[0]} className="mb-20" />
-            <Authors/>
+            <Authors />
             <PlantCollection
                 plants={plants.slice(1, 3)}
                 variant="vertical"

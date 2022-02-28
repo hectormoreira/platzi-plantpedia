@@ -56,6 +56,23 @@ contentful space import --config import/config.json
   - Dashboard
 - El build time mientras más páginas se tenga más lento será el proceso
 
+## Habilitando Incremental Static Generation - ISG
+> Con ISSG puedes generar páginas bajo demanda, las cuales pueden estar generadas mediante dos estrategias de forma bloqueante y de la forma en que el usuario esta consiente del estado de carga. También puedes configurar una página de tal manera que cada cierto tiempo se actualice, esta técnica usa el enfoque state-while-revalidate, en la cual Next.js estará mirando que tiene que cambiar, actualizar y respondiendo con páginas guardadas en caché.
+- Incremental Static Site Generation te permite poder crear nuevas páginas bajo demanda sin tener que volver a compilar la aplicacion otra vez
+- Puedes generar un conjunto de páginas iniciales, y dejar otras por generar bajo demanda del usuario
+
+```json
+// pages/products/[id].js
+
+export async function getStaticProps({ params }) {
+  return {
+    props: {
+      product: await getProductFromDatabase(params.id),
+    },
+    revalidate: 60,
+  };
+}
+```
 
 
 ### Enlaces y lecturas recomendadas
@@ -63,6 +80,8 @@ contentful space import --config import/config.json
 - [What is Jamstack?](https://jamstack.org/what-is-jamstack/)
 - [Contentful](https://www.contentful.com/)
 - [Learn GraphQl - Contentful](https://www.contentful.com/developers/videos/learn-graphql/#exploring-graphql-endpoints-using-graphiql)
+- [Incremental Static Regeneration](https://vercel.com/docs/concepts/next.js/incremental-static-regeneration)
+- [A Complete Guide To Incremental Static Regeneration (ISR) With Next.js](https://www.smashingmagazine.com/2021/04/incremental-static-regeneration-nextjs/)
 
 #
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).

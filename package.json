@@ -49,7 +49,11 @@
   "directories": {
     "doc": "docs"
   },
-  "keywords": ["nextjs","react","contentful"],
+  "keywords": [
+    "nextjs",
+    "react",
+    "contentful"
+  ],
   "author": "Hector Moreira <hector.moreirac@gmail.com>",
   "license": "MIT"
 }
