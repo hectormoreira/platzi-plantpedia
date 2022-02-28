@@ -1,6 +1,8 @@
 # [Curso de Next.js: Sitios Estáticos y Jamstack en Platzi](https://platzi.com/cursos/nextjs-jamstack/)
 Notas y Repo del curso
 
+[Live Demo - Vercel](https://hm-platzi-plantpedia.vercel.app/)
+
 ## Modos de rendering en Next.js
 > Procesamiento de fragmentos de código y datos para mostrar un resultado. Por ejemplo de JS a HTML.
 - **Client-side:** El rendering sucede en el navegador de cada uno de los usuarios. Ejemplo, Create-react-app.
@@ -73,6 +75,40 @@ export async function getStaticProps({ params }) {
   };
 }
 ```
+
+## Estrategia `fallback`
+- `fallback: false`: Muestra un 404
+- `fallback: "blocking"`: Indica a next que cuando una página no se encuentre pre renderizada vaya al server a buscarla
+- `fallback: true`: Da la oportunidad de mostrar estados de loading en el componente
+
+## El enfoque stale-while-revalidate
+Next se encarga de actualizar periodicamente el contenido de las paginas, el tiempo se configura con `revalidate`
+
+## Trade-offs de ISG
+**Ventajas**
+- Flexibilidad de server-side rendering con las bondades de static generation.
+- El build time no aumenta con el numero de paginas
+- La revalidacion brinda mucha mas flexibilidad
+
+**Desventajas**
+- ISG(Incremental static generation) requiere un servidor con node.js
+- No podemos ajustar tiempos de revalidacion ante un enlace que se vuelva viral
+- No es apto para todas las paginas. Ej. páginas de usuario o información personalizada o dashboard en tiempo real
+- ISG(Incremental static generation) no es un problema en sitios con pocas paginas, para un sitio de pocas páginas podrias usar Static Generation
+
+## Otras alternativas: comparación entre SSG y SSR
+**Next.js SSR / Ventajas**
+- La información siempre estará actualizada
+- Poder modificar la respuesta con base en la petición puede ser muy conveniente
+
+**Next.js SSR / Ventajas**
+- Golpea el servidor por cada petición y puede ser costoso. (consume recursos y consume dinero)
+
+**Next.js Export**
+- Puede exportar un renderizado HTML,CSS y JavaScript, por lo tanto no hay backend y puedes subir a servidores de archivos estáticos, como GitHub Pages.
+- Next.js Export no tiene los beneficios de SSR, ISG, Revalidación, rutas, internalización y optimización de imágenes.
+
+
 
 
 ### Enlaces y lecturas recomendadas

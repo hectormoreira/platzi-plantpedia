@@ -8,6 +8,7 @@ import { AuthorCard } from '@components/AuthorCard';
 import { GetStaticProps, InferGetStaticPropsType } from 'next';
 import { PlantEntryInline } from '@components/PlantCollection';
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 
 type PathType = {
@@ -26,8 +27,7 @@ export const getStaticPaths = async () => {
 
     return {
         paths,
-        // 404 en las entradas no encontradas
-        fallback: "blocking"
+        fallback: true
     }
 }
 
@@ -39,6 +39,11 @@ type PlantEntryProps = {
 }
 
 export const getStaticProps: GetStaticProps<PlantEntryProps> = async ({ params }) => {
+    const router = useRouter()
+    if (router.isFallback) {
+        return <Layout>Loading...</Layout>
+    }
+
     const slug = params?.slug
     if (typeof slug !== "string") {
         return {
