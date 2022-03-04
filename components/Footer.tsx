@@ -44,20 +44,22 @@ export const Footer = ({ className }: { className?: string }) => {
               About
             </Typography>
             <p>
-              <a href="https://platzi.com/">Platzi's Next.js Course by</a>{' '}
-              <a href="https://twitter.com/jonalvarezz">@jonalvarezz</a>
+              <a href="https://platzi.com/cursos/nextjs-jamstack/" target='_blank'>Curso de Next.js: Sitios Estáticos y Jamstack</a><br /><br />
+              <a href="https://twitter.com/hectormoreirac" target='_blank'>@hectormoreirac</a>
             </p>
             <div className="mt-3">
               <a
-                href="https://twitter.com/jonalvarezz"
-                title="Follow @jonalvarezz on Twitter"
+                href="https://twitter.com/hectormoreirac"
+                title="Follow @hectormoreirac on Twitter"
                 className="pr-4"
+                target='_blank'
               >
                 TW
               </a>
               <a
-                href="https://github.com/jonalvarezz"
+                href="https://github.com/hectormoreira/platzi-plantpedia"
                 title="Open this project on GitHub"
+                target='_blank'
               >
                 GH
               </a>
@@ -72,8 +74,8 @@ export const Footer = ({ className }: { className?: string }) => {
             </a>
           </p>
           <p>
-            <a target="_blank" href="https://jonalvarezz.com">
-              jonalvarezz.com
+            <a target="_blank" href="https://hectormoreira.dev/">
+              hectormoreira.dev
             </a>
           </p>
         </div>
