@@ -39,8 +39,13 @@ contentful space import --config import/config.json
 }
 ```
 ## Crear .env con secretos
+Públicos
 - `NEXT_PUBLIC_SPACE_ID=`
 - `NEXT_PUBLIC_ACCESS_TOKEN=`
+
+Privados
+- `SPACE_ID=`
+- `ACCESS_TOKEN=`
 
 
 ## getStaticProps
@@ -108,7 +113,57 @@ Next se encarga de actualizar periodicamente el contenido de las paginas, el tie
 - Puede exportar un renderizado HTML,CSS y JavaScript, por lo tanto no hay backend y puedes subir a servidores de archivos estáticos, como GitHub Pages.
 - Next.js Export no tiene los beneficios de SSR, ISG, Revalidación, rutas, internalización y optimización de imágenes.
 
+# **Curso de Next.js: Optimización y Deploy a Producción**
+## Shallow Navigation
+- Es una navegación no profunda
+- También conocido como Routing en memoria
+  - La URL se actualiza, pero el sitio no recarga
+- En Next.js la forma en la que funciona es:
+  - Utilizar el router
+  - Especificamos la opción de shallow
 
+>  La URL se actualizará, pero el estado del componente no, además que Next.js si tiene `getStaticProps`, `getServerSideProps`, etc. Next.js no llamará a los mismos
+
+- Simplemente, el componente se va a actualizar con los cambios de router y se va a renderizar manteniendo el estado del mismo
+- Shallow Navigation funciona únicamente en rutas similares
+  - Donde exista un padre compartido
+
+>  **RESUMEN:** Shallow Navigation principalmente nos ayuda a cambiar la URL de la aplicación sin volver a ejecutar los métodos de traída de datos (`getStaticProps`, `getServerSideProps`, `getStaticPaths`) además que no cambia el estado del componente
+
+> ShallowNavigation: Navegación no profunda, routing en memoria
+
+## next/link y React refs
+- Cuando utilizamos el componente link sobre componentes no nativos como ser las etiquetas: `a`, `button`, `img` Siempre debemos pasar la propiedad `passHref`
+
+```js
+function NavLink({ children, ...linkProps }: PropsWithChildren<LinkProps>) {
+  return (
+    <Link {...linkProps} passHref>
+      <Button color="inherit" variant="text" component="a">
+        {children}
+      </Button>
+    </Link>
+  );
+}
+```
+- En este caso Button proviene de Material UI, la cual el mismo está implementando la referencia que recibe de link y la implementa en el elemento nativo
+- En el caso de tener un componente personalizado que ira dentro de una etiqueta Link, debes implementar la funcionalidad `React.forwardRef()` de la siguiente manera
+
+```js
+const MyButton = React.forwardRef(({ href, onClick }, ref) => {
+  return (
+    <a href={href} onClick={onClick} ref={ref}>
+      Click Me
+    </a>
+  );
+});
+```
+- Esto porque Next.js necesita tener acceso al DOM para su correcto funcionamiento en next/link
+  - Para brindar el acceso al DOM utilizamos las referencias de React.js
+  - Por este motivo las referencias en componentes personalizados se deben enviar hacia abajo hasta llegar al elemento nativo
+- Al utilizar librerías como Material UI o Styled Components las mismas lo realizan por debajo, pero en casos personalizados debes realizar dicha implementación
+
+> **RESUMEN:** Implementar passHref en Next.js es importante para el correcto funcionamiento en el caso de tener un componente personalizado, pasando la referencia hasta llegar al elemento nativo
 
 
 ### Enlaces y lecturas recomendadas
