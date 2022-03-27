@@ -165,6 +165,89 @@ const MyButton = React.forwardRef(({ href, onClick }, ref) => {
 
 > **RESUMEN:** Implementar passHref en Next.js es importante para el correcto funcionamiento en el caso de tener un componente personalizado, pasando la referencia hasta llegar al elemento nativo
 
+## Prefetching de rutas
+- `link decoration` es donde podemos mandar ciertos parámetros por ejemplo: `URL?q=busquega&authuser=1`
+- [Doc next/router](https://nextjs.org/docs/api-reference/next/router#routerprefetch)
+- Para realizar un prefetch de una página de forma manual se puede realizar de la siguiente manera:
+```js
+router.prefetch(
+	url: string,
+	as?: string
+)
+```
+- `url` ⇒ la URL que deseamos hacer un prefetch
+- `as` ⇒ se utiliza en caso de querer decorar el recurso con una URL diferente
+
+> Precargar páginas para realizar transiciones más rápidas en el lado del cliente. Este método solo es útil para navegaciones sin next / link, ya que next / link se encarga de precargar las páginas automáticamente.
+
+- Útil si no se usó `<Link />`
+  - Por ejemplo: cuando se quiere realizar una redirección desde el cliente, se podría hacer con `router.push`
+  - En caso de que esta acción se realiza de forma constante, una mejora podría ser implementar `router.prefetch`
+- Solo funciona en producción
+  - En desarrollo no pasará nada, ya que Next.js, lo habilita únicamente cuando la aplicación está en producción
+- Solo funciona para rutas de Next.js
+  - Esta funcionalidad funciona únicamente con una página de Next.js
+  - No funcionará el prefetch en el caso de un JS, CSS o páginas fuera de Next.js u otros sitios
+  - Debe estar dentro de la carpeta `pages`
+- Prefetch de assets de la página. (No XHR)
+  - El prefetch se encargará de pre cargar los recursos que necesite la página para cargarse correctamente
+  - Este proceso se realiza en tiempo de compilación guardando la información necesaria en un JSON, el código JavaScript que necesita
+    - Esto implica que peticiones HTTP no se cargarán, únicamente la información necesaria
+
+> 📌 **RESUMEN:** `router.prefetch` precarga de forma manual una página de Next.js mejorando la velocidad de carga en el cliente, esto se realiza en tiempo de compilación guardando la información necesaria para mostrar anticipadamente
+
+## ⚠ Páginas de error
+- [Advanced Features: Custom Error Page | Next.js](https://nextjs.org/docs/advanced-features/custom-error-page#404-page)
+- Las páginas de error son indispensables en una aplicación, porque inevitablemente va a suceder
+- Next.js ya trae páginas de error
+  - `404` ⇒ Cuando no se encuentra disponible la página
+  - `500` ⇒ Cuando existe un error en el servidor o en los componentes de React.js
+- También puedes personalizar dichas páginas de error
+- Estas páginas de error, comúnmente se desea evitar que vayan al servidor, entonces Next.js **siempre** las va a renderizar de forma estática
+
+> 📌 **RESUMEN:**  Next.js trae por defecto páginas de error las cuales puedes personalizar
+
+## Configurando el Preview Mode en Contenful
+`http://localhost:3000/api/preview/?secret=nuncaparesdeaprender&slug={entry.fields.slug}`
+
+## 📠 CMS y Preview Mode
+- **Headless CMS** es un sistema gestor de contenido que solo proporciona un back-end construido como un repositorio de contenido. Además, permite que el contenido sea accesible a través de una API
+- Cuando usamos un generador de sitios estáticos con CMS que son headless (no tienen ninguna parte visual) tenemos muchas ventajas de mostrar y el cómo mostrar al usuario
+- Una funcionalidad útil para editores es la capacidad de poder previsualizar el contenido sin publicarlo
+- En el caso de un sitio de muchas visitas y las personas están muy pendientes del mismo, como desarrollador debes tener un control de poder ver el contenido como si estuviera publicado y que la URL no esté disponible para acceder
+- Capacidad de previsualizar contenido sin la necesidad de que esté publicada o disponible para el público
+- Next.js es pionero en esta característica, trabajando con diferentes CMS para brindar esta solución
+  - Nos ofrece la API para habilitar dicha funcionalidad
+  - También nos da un secreto para comunicar con nuestro CMS, de esta manera se verificará que la solicitud es correcta
+> 📌 **RESUMEN:** Preview Mode permite previsualizar contenido sin necesidad de mostrar algo al público. Next.js ofrece funcionalidades para habilitar esta funcionalidad.
+
+## **Deploy**
+> Next.js no es más que una aplicación de Node.js
+
+- La manera de llevar a producción la aplicación es la misma que una aplicación de Node.js
+- Todo el fundamento de Next.js son las bases de Node.js, por lo cual podemos llevar a cualquier lugar que soporte esta tecnología
+- Toda aplicación de Node.js termina siempre con el procedimiento de:
+  - npm install
+  - npm run build
+  - npm run start
+- Desde que el servidor de Node.js comience a funcionar se tienen todos los beneficios de Next.js
+
+> No depende de donde si no de cuáles son las necesidades de la aplicación
+
+- Por ejemplo, en el caso de tener pocos usuarios se puede utilizar digital ocean
+- En el caso de necesitar las funcionalidades para traer datos (`getStaticProps`, `getServerSideProps`) es necesario tener un servidor de Node.js
+
+> 📌 **RESUMEN:** Una aplicación de Next.js no es nada más que una aplicación de Node.js, al correr un servidor del mismo obtendremos todas las características que ofrece Next.js. No depende de donde hacer el deploy si no de cuáles son las necesidades del proyecto.
+
+
+
+
+
+
+
+
+
+
 
 ### Enlaces y lecturas recomendadas
 - [Modern Web Development on the Jamstack - Netlify](https://www.netlify.com/oreilly-jamstack/)

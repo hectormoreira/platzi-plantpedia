@@ -12,6 +12,8 @@ import { getAuthorList, getPlantListByAuthor, QueryStatus } from '@api'
 import { IGetPlantListByAuthorQueryVariables } from '@api/generated/graphql'
 import { useRouter } from 'next/dist/client/router'
 
+import ErrorPage from '../_error';
+
 type TopStoriesPageProps = {
     authors: Author[]
     currentAuthor: Author['handle']
@@ -66,22 +68,7 @@ export default function TopStories({
     const currentAuthor = router.query.author;
 
     if (typeof currentAuthor !== 'string' || authors.length === 0 || status === 'error') {
-        return (
-            <Layout>
-                <main className="pt-10 px-6">
-                    <div className="pb-16">
-                        <Typography variant="h2">Huh, algo no está bien 🙇‍♀️</Typography>
-                    </div>
-                    <article>
-                        <Alert severity="error">
-                            {status === 'error'
-                                ? 'Hubo un error consultando la información. Inspeccionar el request en la pestaña Network de DevTools podría dar más información'
-                                : 'No se encontró la información. ¿Olvidaste configurar el contenido en Contentful?'}
-                        </Alert>
-                    </article>
-                </main>
-            </Layout>
-        )
+        return <ErrorPage />
     }
 
     const tabs: TabItem[] = authors.map((author) => ({
