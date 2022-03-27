@@ -68,7 +68,7 @@ Privados
 - Incremental Static Site Generation te permite poder crear nuevas páginas bajo demanda sin tener que volver a compilar la aplicacion otra vez
 - Puedes generar un conjunto de páginas iniciales, y dejar otras por generar bajo demanda del usuario
 
-```json
+```js
 // pages/products/[id].js
 
 export async function getStaticProps({ params }) {
